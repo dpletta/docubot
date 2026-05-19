@@ -16,6 +16,8 @@ flowchart LR
   CLI --> State[.docubot state]
   CLI --> Git[Git]
   CLI --> Docs[CHANGELOG ARCHITECTURE README]
+  CLI --> Compliance[DMS FAIR DataCite]
+  Compliance --> ProjectMeta[project.yaml]
 ```
 
 ## Components
@@ -26,13 +28,28 @@ flowchart LR
 | core | _auto-tracked_ | `src/docubot/**` |
 | hooks | _auto-tracked_ | `.cursor/hooks/**, .githooks/**` |
 | docs | _auto-tracked_ | `docs/**, templates/**, *.md` |
+| data | _auto-tracked_ | `data/**, notebooks/**, metadata/**` |
+
+## Compliance Layer
+
+Docubot supports NIH Data Management and Sharing ([NOT-OD-21-014](https://grants.nih.gov/grants/guide/notice-files/NOT-OD-21-014.html)) and [FAIR](https://www.go-fair.org/fair-principles/) alignment:
+
+| Module | Output |
+|--------|--------|
+| `metadata/project.py` | Load `.docubot/metadata/project.yaml` |
+| `metadata/nih_dms.py` | `docs/DATA_MANAGEMENT_AND_SHARING.md` (six DMS elements) |
+| `metadata/fair.py` | `docs/FAIR_CHECKLIST.md` with scored checkboxes |
+| `metadata/datacite.py` | `metadata/datacite.json` (DataCite kernel-4 JSON) |
+| `metadata/validate.py` | `docubot validate --compliance` |
+
+Human-edited metadata in `project.yaml` is merged with git-detected file patterns on each sync. Genomic Data Sharing (GDS) supplements are out of scope for v0.1.
 
 ## Data Flow
 
 1. **workspaceOpen** — scaffold missing docs, load manifest.
 2. **sessionStart** — create ephemeral session under `.docubot/sessions/`.
 3. **afterFileEdit** — queue touched files (fast, no LLM).
-4. **sessionEnd / stop** — sync changelog, architecture, README; archive session to manifest.
+4. **sessionEnd / stop** — sync changelog, architecture, README, DMS, FAIR, DataCite; archive session to manifest.
 5. **post-commit** (optional) — append changelog entry from commit message.
 
 ## Key Decisions

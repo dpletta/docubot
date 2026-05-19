@@ -1,11 +1,14 @@
 {
   "schema_version": 1,
-  "last_sync_commit": "2702e349b6ed3b68a73f1c21bd45379cc86788f8",
-  "last_sync_at": "2026-05-19T17:26:11Z",
+  "last_sync_commit": "0d4afdcebb2127e08a55d853a4443b28ad34efd4",
+  "last_sync_at": "2026-05-19T17:59:08Z",
   "doc_fingerprints": {
-    "CHANGELOG.md": "sha256:7c50bbecb666ec959d14426dc8f02ba49110363d75c3f55b0ba497dcba282d0e",
-    "docs/ARCHITECTURE.md": "sha256:9b3bc149a51fa2e47129fd391eb3087a64f10087d9886254be1a5e199b50f957",
-    "README.md": "sha256:3c87f4e2d42b56975a048fcd85deb7d3d0204672f290f192bdd9b362a43e7eac"
+    "CHANGELOG.md": "sha256:c02a21535582db13282ff23b1b34ec97c9896054b0ed74179f65697dbd55b3d2",
+    "docs/ARCHITECTURE.md": "sha256:59433ab28ef6e5001adcd78e4297f781e6f270229258f5b85f8b1e6596a79c65",
+    "README.md": "sha256:7d26f987bec21133d5fbc0aeb07fa484f05c5d78edd08a4e7d098780af5a3cb6",
+    "docs/DATA_MANAGEMENT_AND_SHARING.md": "sha256:436305e85b35f694185aba5cfb60541cd9427ea3687e3aadbe59bb68351edd5f",
+    "docs/FAIR_CHECKLIST.md": "sha256:3a7891a363a2ee7f478e455ca4bc3726337f49e41a8141df17428cd2d1129c10",
+    "metadata/datacite.json": "sha256:33167e59227ae78d80d33e47a829c137a1b6ac8a02d53f10ee022ce541ab20c2"
   },
   "active_session_id": null,
   "sessions": [
@@ -42,5 +45,18 @@
   ],
   "finalize_keys": [
     "e2e-test:gen1:dogfood"
-  ]
+  ],
+  "compliance": {
+    "fair_last_assessed": "2026-05-19T17:59:08Z",
+    "nih_dms_last_synced": "2026-05-19T17:59:08Z",
+    "fair_score": {
+      "findable": 2,
+      "accessible": 3,
+      "interoperable": 2,
+      "reusable": 3
+    },
+    "validation_warnings": [
+      "data.repository.persistent_id is not set (FAIR Findable)"
+    ]
+  }
 }

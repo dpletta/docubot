@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dpletta/docubot/project-metadata.schema.json",
+  "title": "Docubot Project Metadata",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "creators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "orcid": { "type": "string" },
+          "affiliation": { "type": "string" },
+          "role": { "type": "string" }
+        }
+      }
+    },
+    "funding": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "agency": { "type": "string" },
+          "grant_id": { "type": "string" }
+        }
+      }
+    },
+    "license": { "type": "string" },
+    "data": {
+      "type": "object",
+      "properties": {
+        "types": { "type": "array", "items": { "type": "string" } },
+        "types_narrative": { "type": "string" },
+        "preserved_and_shared": { "type": "string" },
+        "not_shared_rationale": { "type": "string" },
+        "related_documentation": { "type": "array", "items": { "type": "string" } },
+        "tools_code": { "type": "string" },
+        "standards": { "type": "array", "items": { "type": "string" } },
+        "repository": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "url": { "type": "string" },
+            "persistent_id": { "type": "string" },
+            "share_timeline": { "type": "string" },
+            "retention_period": { "type": "string" }
+          }
+        },
+        "access": {
+          "type": "object",
+          "properties": {
+            "license": { "type": "string" },
+            "controlled_access": { "type": "boolean" },
+            "restrictions": { "type": "string" },
+            "consent_notes": { "type": "string" },
+            "privacy_notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "oversight": {
+      "type": "object",
+      "properties": {
+        "responsible_party": { "type": "string" },
+        "review_frequency": { "type": "string" }
+      }
+    }
+  }
+}

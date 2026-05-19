@@ -28,4 +28,6 @@ jobs:
         run: pytest -q
 
       - name: Validate (dogfood)
-        run: docubot validate || true
+        run: |
+          docubot validate || true
+          docubot validate --compliance all || true

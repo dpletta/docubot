@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "http://datacite.org/schema/kernel-4",
+  "identifier": "",
+  "identifiers": [],
+  "creators": [
+    {
+      "name": "David Pletta"
+    }
+  ],
+  "titles": [
+    {
+      "title": "docubot",
+      "lang": "en"
+    }
+  ],
+  "publisher": "GitHub",
+  "publicationYear": "2026",
+  "dates": [
+    {
+      "date": "2026-05-19",
+      "dateType": "Updated"
+    }
+  ],
+  "types": {
+    "resourceTypeGeneral": "Software",
+    "resourceType": "Documentation agent"
+  },
+  "descriptions": [
+    {
+      "description": "Portable hook-driven documentation agent for AI-assisted development and data science workflows. This repository is primarily software tooling; when used in NIH-funded projects that generate scientific data, downstream project.yaml files should describe those datasets per DMS policy.\n",
+      "descriptionType": "Abstract"
+    }
+  ],
+  "rightsList": [
+    {
+      "rights": "MIT",
+      "rightsUri": ""
+    }
+  ],
+  "fundingReferences": [],
+  "version": "0.1.0+59b033b",
+  "relatedIdentifiers": [
+    {
+      "relatedIdentifier": "https://github.com/dpletta/docubot",
+      "relatedIdentifierType": "URL",
+      "relationType": "IsMetadataFor"
+    }
+  ]
+}

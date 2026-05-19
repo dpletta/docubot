@@ -7,6 +7,8 @@ from pathlib import Path
 
 from docubot.architecture import ensure_architecture
 from docubot.changelog import ensure_changelog
+from docubot.config import load_config
+from docubot.metadata.compliance import scaffold_compliance_files
 from docubot.paths import docubot_dir, manifest_path, templates_dir
 from docubot.readme import ensure_readme
 from docubot.state import Manifest, save_manifest
@@ -45,6 +47,9 @@ def scaffold_docs(repo_root: Path, project_name: str = "docubot") -> list[str]:
     if not manifest_path(repo_root).is_file():
         save_manifest(repo_root, Manifest())
         created.append(".docubot/manifest.json")
+
+    config = load_config(repo_root)
+    created.extend(scaffold_compliance_files(repo_root, config, project_name))
 
     return created
 

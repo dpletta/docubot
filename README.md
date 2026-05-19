@@ -46,6 +46,7 @@ Installs [`.githooks/`](.githooks/) and sets `core.hooksPath` for changelog sync
 | `docubot sync` | Sync without closing session |
 | `docubot status` | Staleness and session info |
 | `docubot validate` | CI check (exit 1 if stale in strict mode) |
+| `docubot validate --compliance` | FAIR + NIH DMS metadata checks |
 
 ## Configuration
 
@@ -63,6 +64,28 @@ export DOCUBOT_LLM_BASE_URL=https://api.openai.com/v1
 
 - [CHANGELOG.md](CHANGELOG.md) — [Keep a Changelog](https://keepachangelog.com/)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — living architecture reference
+- [docs/DATA_MANAGEMENT_AND_SHARING.md](docs/DATA_MANAGEMENT_AND_SHARING.md) — NIH DMS Plan ([NOT-OD-21-014](https://grants.nih.gov/grants/guide/notice-files/NOT-OD-21-014.html))
+- [docs/FAIR_CHECKLIST.md](docs/FAIR_CHECKLIST.md) — FAIR assessment checklist
+- [metadata/datacite.json](metadata/datacite.json) — machine-readable metadata (DataCite-compatible)
+
+Edit research metadata in [`.docubot/metadata/project.yaml`](.docubot/metadata/project.yaml).
+
+## Compliance Status
+
+<!-- docubot:compliance -->
+| Check | Status |
+|-------|--------|
+| NIH DMS plan | [docs/DATA_MANAGEMENT_AND_SHARING.md](docs/DATA_MANAGEMENT_AND_SHARING.md) (enabled) |
+| FAIR checklist | [docs/FAIR_CHECKLIST.md](docs/FAIR_CHECKLIST.md) (enabled) |
+| DataCite JSON | [metadata/datacite.json](metadata/datacite.json) |
+| Project metadata | `.docubot/metadata/project.yaml` |
+| Last FAIR assess | 2026-05-19T17:59:08Z |
+| Last DMS sync | 2026-05-19T17:59:08Z |
+| FAIR score (checked) | F:2/3 A:3/3 I:2/2 R:3/3 |
+
+**Warnings:**
+- data.repository.persistent_id is not set (FAIR Findable)
+<!-- /docubot:compliance -->
 
 ## Recent Sessions
 

@@ -25,19 +25,45 @@ class LlmConfig:
 
 
 @dataclass
+class ComplianceConfig:
+    fair: bool = True
+    nih_dms: bool = True
+    strict: bool = False
+
+
+@dataclass
+class MetadataPathsConfig:
+    project_file: str = ".docubot/metadata/project.yaml"
+    datacite_output: str = "metadata/datacite.json"
+    citation_cff: str = "CITATION.cff"
+
+
+@dataclass
 class DocsConfig:
     changelog: str = "CHANGELOG.md"
     architecture: str = "docs/ARCHITECTURE.md"
     readme: str = "README.md"
+    dms_plan: str = "docs/DATA_MANAGEMENT_AND_SHARING.md"
+    fair_checklist: str = "docs/FAIR_CHECKLIST.md"
 
 
 @dataclass
 class Config:
     schema_version: int = 1
     watch_paths: list[str] = field(
-        default_factory=lambda: ["src/**", "lib/**", "*.py", "*.ipynb"]
+        default_factory=lambda: [
+            "src/**",
+            "lib/**",
+            "notebooks/**",
+            "data/**",
+            "metadata/**",
+            "*.py",
+            "*.ipynb",
+        ]
     )
     docs: DocsConfig = field(default_factory=DocsConfig)
+    metadata: MetadataPathsConfig = field(default_factory=MetadataPathsConfig)
+    compliance: ComplianceConfig = field(default_factory=ComplianceConfig)
     components: list[ComponentRule] = field(default_factory=list)
     stale_check: str = "warn"
     llm: LlmConfig = field(default_factory=LlmConfig)
@@ -52,6 +78,21 @@ class Config:
     def readme_path(self, repo_root: Path) -> Path:
         return repo_root / self.docs.readme
 
+    def dms_plan_path(self, repo_root: Path) -> Path:
+        return repo_root / self.docs.dms_plan
+
+    def fair_checklist_path(self, repo_root: Path) -> Path:
+        return repo_root / self.docs.fair_checklist
+
+    def project_metadata_path(self, repo_root: Path) -> Path:
+        return repo_root / self.metadata.project_file
+
+    def datacite_path(self, repo_root: Path) -> Path:
+        return repo_root / self.metadata.datacite_output
+
+    def citation_cff_path(self, repo_root: Path) -> Path:
+        return repo_root / self.metadata.citation_cff
+
 
 def load_config(repo_root: Path) -> Config:
     path = config_path(repo_root)
@@ -60,6 +101,8 @@ def load_config(repo_root: Path) -> Config:
     raw: dict[str, Any] = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     docs_raw = raw.get("docs") or {}
     llm_raw = raw.get("llm") or {}
+    compliance_raw = raw.get("compliance") or {}
+    metadata_raw = raw.get("metadata") or {}
     components = [
         ComponentRule(name=c["name"], paths=list(c.get("paths") or []))
         for c in (raw.get("components") or [])
@@ -72,6 +115,18 @@ def load_config(repo_root: Path) -> Config:
             changelog=str(docs_raw.get("changelog", "CHANGELOG.md")),
             architecture=str(docs_raw.get("architecture", "docs/ARCHITECTURE.md")),
             readme=str(docs_raw.get("readme", "README.md")),
+            dms_plan=str(docs_raw.get("dms_plan", "docs/DATA_MANAGEMENT_AND_SHARING.md")),
+            fair_checklist=str(docs_raw.get("fair_checklist", "docs/FAIR_CHECKLIST.md")),
+        ),
+        metadata=MetadataPathsConfig(
+            project_file=str(metadata_raw.get("project_file", ".docubot/metadata/project.yaml")),
+            datacite_output=str(metadata_raw.get("datacite_output", "metadata/datacite.json")),
+            citation_cff=str(metadata_raw.get("citation_cff", "CITATION.cff")),
+        ),
+        compliance=ComplianceConfig(
+            fair=bool(compliance_raw.get("fair", True)),
+            nih_dms=bool(compliance_raw.get("nih_dms", True)),
+            strict=bool(compliance_raw.get("strict", False)),
         ),
         components=components,
         stale_check=str(raw.get("stale_check", "warn")),

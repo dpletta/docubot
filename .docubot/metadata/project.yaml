@@ -1,0 +1,64 @@
+# Docubot repository metadata (dogfood)
+# NOT-OD-21-014: https://grants.nih.gov/grants/guide/notice-files/NOT-OD-21-014.html
+
+project:
+  title: docubot
+  description: >
+    Portable hook-driven documentation agent for AI-assisted development and
+    data science workflows. This repository is primarily software tooling; when
+    used in NIH-funded projects that generate scientific data, downstream
+    project.yaml files should describe those datasets per DMS policy.
+  version: "0.1.0"
+
+creators:
+  - name: David Pletta
+    orcid: ""
+    affiliation: ""
+    role: contact
+
+funding: []
+
+license: MIT
+
+data:
+  types:
+    - software
+  types_narrative: |
+    This repository distributes Python source code, templates, and documentation.
+    It does not itself generate primary scientific datasets. Docubot helps
+    research projects maintain NIH DMS plans and FAIR metadata for their data.
+  preserved_and_shared: |
+    Source code and documentation are shared via the public Git repository.
+    Scientific data are not produced by this software project.
+  not_shared_rationale: |
+    Not applicable for software-only distribution.
+  related_documentation:
+    - docs/ARCHITECTURE.md
+    - docs/DATA_MANAGEMENT_AND_SHARING.md
+    - docs/FAIR_CHECKLIST.md
+    - CHANGELOG.md
+    - metadata/datacite.json
+  tools_code: |
+    Python 3.11+, Click, PyYAML. Install with pip install -e .
+    Cursor hooks and optional git hooks orchestrate documentation sync.
+  standards:
+    - Markdown
+    - YAML (project metadata)
+    - JSON (DataCite metadata)
+    - Keep a Changelog
+  repository:
+    name: GitHub
+    url: https://github.com/dpletta/docubot
+    persistent_id: ""  # e.g. Zenodo DOI when released
+    share_timeline: Continuous via git; tagged releases as available.
+    retention_period: Indefinite while repository is public.
+  access:
+    license: MIT
+    controlled_access: false
+    restrictions: ""
+    consent_notes: ""
+    privacy_notes: ""
+
+oversight:
+  responsible_party: Repository maintainer
+  review_frequency: At each release and when compliance templates change.

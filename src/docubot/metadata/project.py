@@ -81,7 +81,8 @@ def _get_dict(raw: dict[str, Any], key: str) -> dict[str, Any]:
 def load_project_metadata(path: Path, project_name: str = "project") -> ProjectMetadata:
     if not path.is_file():
         return ProjectMetadata(project_title=project_name)
-    raw: dict[str, Any] = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
+    raw: dict[str, Any] = loaded if isinstance(loaded, dict) else {}
     proj = _get_dict(raw, "project")
     data_raw = _get_dict(raw, "data")
     repo_raw = _get_dict(data_raw, "repository")

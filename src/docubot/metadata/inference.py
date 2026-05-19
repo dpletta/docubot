@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import tomllib
 from pathlib import Path
 
 MODALITY_PATTERNS: list[tuple[str, tuple[str, ...]]] = [
@@ -31,11 +32,15 @@ def infer_modalities(files: list[str]) -> list[str]:
 def detect_package_name(repo_root: Path) -> str | None:
     pyproject = repo_root / "pyproject.toml"
     if pyproject.is_file():
-        for line in pyproject.read_text(encoding="utf-8").splitlines():
-            if line.strip().startswith("name"):
-                parts = line.split("=", 1)
-                if len(parts) == 2:
-                    return parts[1].strip().strip('"').strip("'")
+        try:
+            parsed = tomllib.loads(pyproject.read_text(encoding="utf-8"))
+        except tomllib.TOMLDecodeError:
+            parsed = {}
+        project = parsed.get("project")
+        if isinstance(project, dict):
+            name = project.get("name")
+            if isinstance(name, str) and name.strip():
+                return name.strip()
     req = repo_root / "requirements.txt"
     if req.is_file():
         return "requirements.txt dependencies"

@@ -18,11 +18,13 @@ REDACT_PATTERNS = (
 
 
 def _redact(text: str) -> str:
-    lower = text.lower()
-    for p in REDACT_PATTERNS:
-        if p.lower() in lower:
-            return "[redacted context]"
-    return text
+    lines: list[str] = []
+    for line in text.splitlines():
+        if any(pattern.lower() in line.lower() for pattern in REDACT_PATTERNS):
+            lines.append("[redacted line]")
+        else:
+            lines.append(line)
+    return "\n".join(lines)
 
 
 class OpenAICompatProvider(DocProvider):

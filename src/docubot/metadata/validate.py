@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from docubot.config import Config
 from docubot.metadata.fair import compute_fair_score
@@ -52,7 +53,7 @@ def validate_fair(
     meta: ProjectMetadata,
     config: Config,
     manifest: Manifest,
-    repo_root,
+    repo_root: Path,
     strict: bool,
 ) -> ComplianceReport:
     report = ComplianceReport()
@@ -76,7 +77,7 @@ def validate_compliance(
     meta: ProjectMetadata,
     config: Config,
     manifest: Manifest,
-    repo_root,
+    repo_root: Path,
     *,
     mode: str = "all",
 ) -> ComplianceReport:

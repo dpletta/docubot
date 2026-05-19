@@ -1,0 +1,11 @@
+#!/bin/sh
+# Docubot post-commit: sync changelog from commit message
+ROOT="$(git rev-parse --show-toplevel)"
+export PATH="$ROOT/.venv/bin:$HOME/.local/bin:$PATH"
+if command -v docubot >/dev/null 2>&1; then
+  docubot git post-commit
+elif [ -x "$ROOT/.venv/bin/docubot" ]; then
+  "$ROOT/.venv/bin/docubot" git post-commit
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHONPATH="$ROOT/src" python3 -m docubot.cli git post-commit 2>/dev/null || true
+fi

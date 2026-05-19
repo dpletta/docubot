@@ -1,0 +1,10 @@
+#!/bin/sh
+ROOT="$(git rev-parse --show-toplevel)"
+export PATH="$ROOT/.venv/bin:$HOME/.local/bin:$PATH"
+if command -v docubot >/dev/null 2>&1; then
+  docubot git pre-commit || exit $?
+elif [ -x "$ROOT/.venv/bin/docubot" ]; then
+  "$ROOT/.venv/bin/docubot" git pre-commit || exit $?
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHONPATH="$ROOT/src" python3 -m docubot.cli git pre-commit || exit $?
+fi

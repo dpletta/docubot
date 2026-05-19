@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "last_sync_commit": "2702e349b6ed3b68a73f1c21bd45379cc86788f8",
+  "last_sync_at": "2026-05-19T17:26:11Z",
+  "doc_fingerprints": {
+    "CHANGELOG.md": "sha256:7c50bbecb666ec959d14426dc8f02ba49110363d75c3f55b0ba497dcba282d0e",
+    "docs/ARCHITECTURE.md": "sha256:9b3bc149a51fa2e47129fd391eb3087a64f10087d9886254be1a5e199b50f957",
+    "README.md": "sha256:3c87f4e2d42b56975a048fcd85deb7d3d0204672f290f192bdd9b362a43e7eac"
+  },
+  "active_session_id": null,
+  "sessions": [
+    {
+      "id": "fc67abe4-5ea6-4518-a1f2-627d38800b82",
+      "started_at": "2026-05-19T17:26:11Z",
+      "conversation_id": "e2e-test",
+      "ended_at": "2026-05-19T17:26:11Z",
+      "reason": "dogfood",
+      "branch": "cursor/docubot-agent-72b2",
+      "commits": [],
+      "files_touched": [
+        "src/docubot/cli.py",
+        ".cursor/",
+        ".docubot/",
+        ".githooks/",
+        ".github/",
+        ".gitignore",
+        "CHANGELOG.md",
+        "README.md",
+        "docs/",
+        "pyproject.toml",
+        "src/",
+        "templates/",
+        "tests/"
+      ],
+      "components_touched": [
+        "core",
+        "hooks",
+        "docs"
+      ],
+      "summary": null
+    }
+  ],
+  "finalize_keys": [
+    "e2e-test:gen1:dogfood"
+  ]
+}

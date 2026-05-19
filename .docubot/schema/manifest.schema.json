@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dpletta/docubot/manifest.schema.json",
+  "title": "Docubot Manifest",
+  "type": "object",
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "last_sync_commit": { "type": ["string", "null"] },
+    "last_sync_at": { "type": ["string", "null"], "format": "date-time" },
+    "doc_fingerprints": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "active_session_id": { "type": ["string", "null"] },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "started_at"],
+        "properties": {
+          "id": { "type": "string" },
+          "conversation_id": { "type": ["string", "null"] },
+          "started_at": { "type": "string" },
+          "ended_at": { "type": ["string", "null"] },
+          "reason": { "type": ["string", "null"] },
+          "branch": { "type": ["string", "null"] },
+          "commits": { "type": "array", "items": { "type": "string" } },
+          "files_touched": { "type": "array", "items": { "type": "string" } },
+          "components_touched": { "type": "array", "items": { "type": "string" } },
+          "summary": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "finalize_keys": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Idempotency keys for sessionEnd/stop duplicate finalize"
+    }
+  }
+}

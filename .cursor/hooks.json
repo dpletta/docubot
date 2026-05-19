@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "hooks": {
+    "workspaceOpen": [
+      {
+        "command": ".cursor/hooks/workspace-open.sh"
+      }
+    ],
+    "sessionStart": [
+      {
+        "command": ".cursor/hooks/session-start.sh"
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "command": ".cursor/hooks/session-track-edit.sh"
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": ".cursor/hooks/session-end.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/stop-finalize.sh"
+      }
+    ]
+  }
+}

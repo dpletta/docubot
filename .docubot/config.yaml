@@ -1,0 +1,40 @@
+# Docubot project configuration
+# See https://github.com/dpletta/docubot
+
+schema_version: 1
+
+watch_paths:
+  - "src/**"
+  - "lib/**"
+  - "notebooks/**"
+  - "*.py"
+  - "*.ipynb"
+  - "pyproject.toml"
+
+docs:
+  changelog: CHANGELOG.md
+  architecture: docs/ARCHITECTURE.md
+  readme: README.md
+
+components:
+  - name: core
+    paths:
+      - "src/docubot/**"
+  - name: hooks
+    paths:
+      - ".cursor/hooks/**"
+      - ".githooks/**"
+  - name: docs
+    paths:
+      - "docs/**"
+      - "templates/**"
+      - "*.md"
+
+stale_check: warn  # warn | strict | off
+
+llm:
+  enabled: false
+  model: gpt-4o-mini
+  max_tokens: 512
+
+preserve_sections: true

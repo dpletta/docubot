@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Living `docs/ARCHITECTURE.md` with session activity tracking
 - README managed blocks for recent sessions
 - Manifest-based staleness detection (`.docubot/manifest.json`)
-- Optional OpenAI-compatible LLM summaries (disabled by default)- implement docubot documentation agent with Cursor and git hooks (59b033b)- add FAIR and NIH DMS compliance metadata workflows (0d4afdc)
+- Optional OpenAI-compatible LLM summaries (disabled by default)
 
 ### Changed
 

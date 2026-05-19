@@ -49,6 +49,26 @@ class SessionRecord:
 
 
 @dataclass
+class ComplianceState:
+    fair_last_assessed: str | None = None
+    nih_dms_last_synced: str | None = None
+    fair_score: dict[str, int] = field(default_factory=dict)
+    validation_warnings: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ComplianceState:
+        return cls(
+            fair_last_assessed=data.get("fair_last_assessed"),
+            nih_dms_last_synced=data.get("nih_dms_last_synced"),
+            fair_score=dict(data.get("fair_score") or {}),
+            validation_warnings=list(data.get("validation_warnings") or []),
+        )
+
+
+@dataclass
 class Manifest:
     schema_version: int = 1
     last_sync_commit: str | None = None
@@ -57,9 +77,10 @@ class Manifest:
     active_session_id: str | None = None
     sessions: list[SessionRecord] = field(default_factory=list)
     finalize_keys: list[str] = field(default_factory=list)
+    compliance: ComplianceState | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        out: dict[str, Any] = {
             "schema_version": self.schema_version,
             "last_sync_commit": self.last_sync_commit,
             "last_sync_at": self.last_sync_at,
@@ -68,12 +89,19 @@ class Manifest:
             "sessions": [s.to_dict() for s in self.sessions],
             "finalize_keys": self.finalize_keys,
         }
+        if self.compliance is not None:
+            out["compliance"] = self.compliance.to_dict()
+        return out
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> Manifest:
         sessions = [
             SessionRecord.from_dict(s) for s in (data.get("sessions") or []) if isinstance(s, dict)
         ]
+        comp_raw = data.get("compliance")
+        compliance = (
+            ComplianceState.from_dict(comp_raw) if isinstance(comp_raw, dict) else None
+        )
         return cls(
             schema_version=int(data.get("schema_version", 1)),
             last_sync_commit=data.get("last_sync_commit"),
@@ -82,6 +110,7 @@ class Manifest:
             active_session_id=data.get("active_session_id"),
             sessions=sessions,
             finalize_keys=list(data.get("finalize_keys") or []),
+            compliance=compliance,
         )
 
 

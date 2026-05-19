@@ -7,6 +7,8 @@ watch_paths:
   - "src/**"
   - "lib/**"
   - "notebooks/**"
+  - "data/**"
+  - "metadata/**"
   - "*.py"
   - "*.ipynb"
   - "pyproject.toml"
@@ -15,6 +17,18 @@ docs:
   changelog: CHANGELOG.md
   architecture: docs/ARCHITECTURE.md
   readme: README.md
+  dms_plan: docs/DATA_MANAGEMENT_AND_SHARING.md
+  fair_checklist: docs/FAIR_CHECKLIST.md
+
+metadata:
+  project_file: .docubot/metadata/project.yaml
+  datacite_output: metadata/datacite.json
+  citation_cff: CITATION.cff
+
+compliance:
+  fair: true
+  nih_dms: true
+  strict: false
 
 components:
   - name: core
@@ -29,6 +43,11 @@ components:
       - "docs/**"
       - "templates/**"
       - "*.md"
+  - name: data
+    paths:
+      - "data/**"
+      - "notebooks/**"
+      - "metadata/**"
 
 stale_check: warn  # warn | strict | off
 

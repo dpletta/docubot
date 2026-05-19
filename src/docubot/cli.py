@@ -12,6 +12,8 @@ import click
 from docubot.changelog import append_commit_entry, ensure_changelog
 from docubot.config import load_config
 from docubot.git_util import get_commit, head_commit, is_git_repo
+from docubot.metadata.project import load_project_metadata
+from docubot.metadata.validate import validate_compliance
 from docubot.paths import find_repo_root
 from docubot.scaffold import install_cursor_hooks, install_git_hooks, scaffold_docs
 from docubot.session import (
@@ -143,18 +145,43 @@ def cmd_status() -> None:
 
 
 @main.command("validate")
+@click.option(
+    "--compliance",
+    "compliance_mode",
+    type=click.Choice(["all", "nih", "fair"], case_sensitive=False),
+    default=None,
+    help="Run FAIR/NIH metadata compliance checks",
+)
 @click.pass_context
-def cmd_validate(ctx: click.Context) -> None:
-    """Exit 1 if documentation is stale (for CI)."""
+def cmd_validate(ctx: click.Context, compliance_mode: str | None) -> None:
+    """Exit 1 if documentation is stale or compliance checks fail (strict mode)."""
     root = _repo_root()
     config = load_config(root)
     manifest = load_manifest(root)
+    exit_code = 0
+
     stale = check_stale(root, config, manifest)
     if stale.stale and config.stale_check in ("strict", "warn"):
         if config.stale_check == "strict":
             click.echo(f"Documentation stale: {stale.reason}", err=True)
-            ctx.exit(1)
-        click.echo(f"Warning: {stale.reason}", err=True)
+            exit_code = 1
+        else:
+            click.echo(f"Warning: {stale.reason}", err=True)
+
+    if compliance_mode is not None:
+        meta = load_project_metadata(config.project_metadata_path(root), root.name)
+        report = validate_compliance(
+            meta, config, manifest, root, mode=compliance_mode or "all"
+        )
+        for w in report.warnings:
+            click.echo(f"Compliance warning: {w}", err=True)
+        for e in report.errors:
+            click.echo(f"Compliance error: {e}", err=True)
+        if not report.ok:
+            exit_code = 1
+
+    if exit_code:
+        ctx.exit(exit_code)
     click.echo("OK")
 
 

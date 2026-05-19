@@ -36,6 +36,21 @@
       "type": "array",
       "items": { "type": "string" },
       "description": "Idempotency keys for sessionEnd/stop duplicate finalize"
+    },
+    "compliance": {
+      "type": "object",
+      "properties": {
+        "fair_last_assessed": { "type": ["string", "null"] },
+        "nih_dms_last_synced": { "type": ["string", "null"] },
+        "fair_score": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "validation_warnings": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
     }
   }
 }

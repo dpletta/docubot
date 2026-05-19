@@ -19,6 +19,11 @@ from docubot.git_util import (
     dirty_files,
     head_commit,
 )
+from docubot.metadata.compliance import (
+    compliance_context_warnings,
+    scaffold_compliance_files,
+    sync_compliance_artifacts,
+)
 from docubot.paths import find_repo_root
 from docubot.providers.base import get_provider
 from docubot.readme import ensure_readme, update_recent_sessions
@@ -46,6 +51,7 @@ def workspace_init(cwd: Path | None = None) -> dict[str, Any]:
     root = _repo_root(cwd)
     config = load_config(root)
     created = scaffold_docs(root, project_name=root.name)
+    created.extend(scaffold_compliance_files(root, config, root.name))
     manifest = load_manifest(root)
     save_manifest(root, manifest)
     stale = check_stale(root, config, manifest)
@@ -67,6 +73,7 @@ def session_start(payload: dict[str, Any]) -> dict[str, Any]:
     root = _repo_root()
     config = load_config(root)
     scaffold_docs(root, project_name=root.name)
+    scaffold_compliance_files(root, config, root.name)
 
     conversation_id = payload.get("conversation_id")
     generation_id = payload.get("generation_id")
@@ -96,6 +103,8 @@ def session_start(payload: dict[str, Any]) -> dict[str, Any]:
     dirty = dirty_files(root)
     if dirty:
         context_lines.append(f"Uncommitted files: {len(dirty)}")
+    for w in compliance_context_warnings(root, config, manifest):
+        context_lines.append(f"Compliance: {w}")
 
     return {
         "session_id": session_id,
@@ -221,12 +230,23 @@ def sync_docs(
 
     update_recent_sessions(readme_path, manifest.sessions)
 
+    if config.compliance.nih_dms or config.compliance.fair:
+        manifest, _ = sync_compliance_artifacts(repo_root, config, manifest, files)
+
     head = head_commit(repo_root)
     if head:
         manifest.last_sync_commit = head
     manifest.last_sync_at = _iso_now()
 
-    for doc_rel in (config.docs.changelog, config.docs.architecture, config.docs.readme):
+    doc_paths = [
+        config.docs.changelog,
+        config.docs.architecture,
+        config.docs.readme,
+        config.docs.dms_plan,
+        config.docs.fair_checklist,
+        config.metadata.datacite_output,
+    ]
+    for doc_rel in doc_paths:
         fp = repo_root / doc_rel
         if fp.is_file():
             digest = fingerprint_file(fp)

@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "${project_name}"
+version: 0.1.0
+license: MIT
+authors:
+  - family-names: ""
+    given-names: ""
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+repository-code: "https://github.com/dpletta/docubot"
+keywords:
+  - documentation
+  - fair
+  - data-management

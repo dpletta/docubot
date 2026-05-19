@@ -6,7 +6,11 @@ from pathlib import Path
 from string import Template
 
 from docubot.blocks import replace_block
-from docubot.state import SessionRecord
+from docubot.config import Config
+from docubot.metadata.fair import FairScore
+from docubot.metadata.project import ProjectMetadata
+from docubot.metadata.validate import ComplianceReport
+from docubot.state import Manifest, SessionRecord
 
 
 def ensure_readme(
@@ -47,3 +51,48 @@ def update_recent_sessions(path: Path, sessions: list[SessionRecord], limit: int
         content = "\n".join(format_session_entry(s) for s in ended[:limit])
     new_text = replace_block(text, "recent-sessions", content)
     path.write_text(new_text, encoding="utf-8")
+
+
+def update_compliance_summary(
+    path: Path,
+    meta: ProjectMetadata,
+    config: Config,
+    manifest: Manifest,
+    fair_score: FairScore | None,
+    report: ComplianceReport,
+) -> None:
+    if not path.is_file():
+        return
+    nih_status = "enabled" if config.compliance.nih_dms else "off"
+    fair_status = "enabled" if config.compliance.fair else "off"
+    score_line = ""
+    if fair_score:
+        score_line = (
+            f"\n| FAIR score (checked) | F:{fair_score.findable}/3 A:{fair_score.accessible}/3 "
+            f"I:{fair_score.interoperable}/2 R:{fair_score.reusable}/3 |"
+        )
+    warn_lines = ""
+    if report.warnings:
+        warn_lines = "\n\n**Warnings:**\n" + "\n".join(f"- {w}" for w in report.warnings[:8])
+    if report.errors:
+        warn_lines += "\n\n**Errors:**\n" + "\n".join(f"- {e}" for e in report.errors[:8])
+
+    comp = manifest.compliance
+    last_fair = comp.fair_last_assessed if comp else "never"
+    last_nih = comp.nih_dms_last_synced if comp else "never"
+    dc_path = config.metadata.datacite_output
+
+    content = (
+        f"| Check | Status |\n|-------|--------|\n"
+        f"| NIH DMS plan | [{config.docs.dms_plan}]({config.docs.dms_plan}) ({nih_status}) |\n"
+        f"| FAIR checklist | [{config.docs.fair_checklist}]({config.docs.fair_checklist}) "
+        f"({fair_status}) |\n"
+        f"| DataCite JSON | [{dc_path}]({dc_path}) |\n"
+        f"| Project metadata | `{config.metadata.project_file}` |\n"
+        f"| Last FAIR assess | {last_fair} |\n"
+        f"| Last DMS sync | {last_nih} |"
+        f"{score_line}"
+        f"{warn_lines}"
+    )
+    text = path.read_text(encoding="utf-8")
+    path.write_text(replace_block(text, "compliance", content), encoding="utf-8")

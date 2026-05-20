@@ -1,14 +1,15 @@
 cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-title: "workspace"
+message: If you use this software, please cite it as below.
+title: docubot
 version: 0.1.0
-license: MIT
 authors:
-  - family-names: ""
-    given-names: ""
-    orcid: "https://orcid.org/0000-0000-0000-0000"
-repository-code: "https://github.com/dpletta/docubot"
+- family-names: Pletta
+  given-names: David
+license: MIT
+repository-code: https://github.com/dpletta/docubot
 keywords:
-  - documentation
-  - fair
-  - data-management
+- software
+abstract: Portable hook-driven documentation agent for AI-assisted development and
+  data science workflows. This repository is primarily software tooling; when used
+  in NIH-funded projects that generate scientific data, downstream project.yaml files
+  should describe those datasets per DMS policy.

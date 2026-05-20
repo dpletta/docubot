@@ -245,6 +245,7 @@ def sync_docs(
         config.docs.dms_plan,
         config.docs.fair_checklist,
         config.metadata.datacite_output,
+        config.metadata.citation_cff,
     ]
     for doc_rel in doc_paths:
         fp = repo_root / doc_rel

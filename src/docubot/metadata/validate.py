@@ -2,27 +2,14 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from pathlib import Path
 
 from docubot.config import Config
 from docubot.metadata.fair import compute_fair_score
 from docubot.metadata.project import ProjectMetadata
+from docubot.metadata.report import ComplianceReport
+from docubot.metadata.schema import validate_project_schema
 from docubot.state import Manifest
-
-
-@dataclass
-class ComplianceReport:
-    ok: bool = True
-    errors: list[str] = field(default_factory=list)
-    warnings: list[str] = field(default_factory=list)
-
-    def add_error(self, msg: str) -> None:
-        self.errors.append(msg)
-        self.ok = False
-
-    def add_warning(self, msg: str) -> None:
-        self.warnings.append(msg)
 
 
 def validate_nih(meta: ProjectMetadata, strict: bool) -> ComplianceReport:
@@ -83,6 +70,15 @@ def validate_compliance(
 ) -> ComplianceReport:
     strict = config.compliance.strict
     combined = ComplianceReport()
+    schema_report = validate_project_schema(
+        config.project_metadata_path(repo_root),
+        repo_root,
+        strict=strict,
+    )
+    combined.errors.extend(schema_report.errors)
+    combined.warnings.extend(schema_report.warnings)
+    combined.ok = combined.ok and schema_report.ok
+
     if mode in ("all", "nih") and config.compliance.nih_dms:
         nih = validate_nih(meta, strict)
         combined.errors.extend(nih.errors)

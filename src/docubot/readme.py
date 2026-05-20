@@ -9,7 +9,7 @@ from docubot.blocks import replace_block
 from docubot.config import Config
 from docubot.metadata.fair import FairScore
 from docubot.metadata.project import ProjectMetadata
-from docubot.metadata.validate import ComplianceReport
+from docubot.metadata.report import ComplianceReport
 from docubot.state import Manifest, SessionRecord
 
 
@@ -80,7 +80,9 @@ def update_compliance_summary(
     comp = manifest.compliance
     last_fair = comp.fair_last_assessed if comp else "never"
     last_nih = comp.nih_dms_last_synced if comp else "never"
+    last_cff = comp.citation_cff_last_synced if comp else "never"
     dc_path = config.metadata.datacite_output
+    cff_path = config.metadata.citation_cff
 
     content = (
         f"| Check | Status |\n|-------|--------|\n"
@@ -88,9 +90,11 @@ def update_compliance_summary(
         f"| FAIR checklist | [{config.docs.fair_checklist}]({config.docs.fair_checklist}) "
         f"({fair_status}) |\n"
         f"| DataCite JSON | [{dc_path}]({dc_path}) |\n"
+        f"| CITATION.cff | [{cff_path}]({cff_path}) |\n"
         f"| Project metadata | `{config.metadata.project_file}` |\n"
         f"| Last FAIR assess | {last_fair} |\n"
-        f"| Last DMS sync | {last_nih} |"
+        f"| Last DMS sync | {last_nih} |\n"
+        f"| Last CITATION.cff sync | {last_cff} |"
         f"{score_line}"
         f"{warn_lines}"
     )

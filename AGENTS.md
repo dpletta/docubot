@@ -17,6 +17,6 @@
 ### Gotchas
 
 - The `docubot` CLI is installed to `~/.local/bin`. Ensure `$HOME/.local/bin` is on `PATH`.
-- `docubot session start` reads JSON from stdin when stdin is not a TTY (i.e. in shell pipelines). Pipe `echo '{}' | docubot session start` to avoid hanging. Same applies to `session finalize` and `session track`.
+- `docubot session start` reads JSON from stdin when stdin is not a TTY (i.e. in shell pipelines). Pipe `echo '{}' | docubot session start` to avoid hanging. Same applies to `session finalize` and `session track-stdin`.
 - LLM features are disabled by default (`NoOpProvider`). No API key is needed for tests or normal operation.
 - All tests run locally with `pytest` and complete in under 1 second. No mocking of external services is needed beyond what the test suite already provides.

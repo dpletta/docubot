@@ -52,6 +52,7 @@ class SessionRecord:
 class ComplianceState:
     fair_last_assessed: str | None = None
     nih_dms_last_synced: str | None = None
+    citation_cff_last_synced: str | None = None
     fair_score: dict[str, int] = field(default_factory=dict)
     validation_warnings: list[str] = field(default_factory=list)
 
@@ -63,6 +64,7 @@ class ComplianceState:
         return cls(
             fair_last_assessed=data.get("fair_last_assessed"),
             nih_dms_last_synced=data.get("nih_dms_last_synced"),
+            citation_cff_last_synced=data.get("citation_cff_last_synced"),
             fair_score=dict(data.get("fair_score") or {}),
             validation_warnings=list(data.get("validation_warnings") or []),
         )

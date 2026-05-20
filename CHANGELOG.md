@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Core performance: batched `git log`, conditional compliance sync, stat-based doc fingerprints, faster session track/start
+
+### Changed
+
+- `session_track` no longer appends unbounded per-edit events; session files use compact JSON
+
 - FAIR checklist and DataCite-compatible `metadata/datacite.json` generation
 - NIH Data Management and Sharing Plan scaffold (`docs/DATA_MANAGEMENT_AND_SHARING.md`, NOT-OD-21-014)
 - Project metadata source of truth (`.docubot/metadata/project.yaml`)

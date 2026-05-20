@@ -11,7 +11,7 @@ from docubot.architecture import sync_architecture
 from docubot.changelog import append_session_summary, ensure_changelog, sync_commits
 from docubot.components import components_for_files
 from docubot.config import Config, load_config
-from docubot.fingerprint import fingerprint_file
+from docubot.fingerprint import file_stat_signature, fingerprint_file
 from docubot.git_util import (
     changed_files_since,
     commits_since,
@@ -24,7 +24,8 @@ from docubot.metadata.compliance import (
     scaffold_compliance_files,
     sync_compliance_artifacts,
 )
-from docubot.paths import find_repo_root
+from docubot.paths import find_repo_root, manifest_path
+from docubot.perf import compliance_sync_needed, doc_fingerprint_unchanged
 from docubot.providers.base import get_provider
 from docubot.readme import ensure_readme, update_recent_sessions
 from docubot.scaffold import scaffold_docs
@@ -72,8 +73,10 @@ def session_start_from_stdin() -> dict[str, Any]:
 def session_start(payload: dict[str, Any]) -> dict[str, Any]:
     root = _repo_root()
     config = load_config(root)
-    scaffold_docs(root, project_name=root.name)
-    scaffold_compliance_files(root, config, root.name)
+    if not manifest_path(root).is_file():
+        scaffold_docs(root, project_name=root.name)
+    else:
+        scaffold_compliance_files(root, config, root.name)
 
     conversation_id = payload.get("conversation_id")
     generation_id = payload.get("generation_id")
@@ -122,9 +125,9 @@ def session_track(file_path: str, cwd: Path | None = None) -> None:
     if not session:
         return
     rel = _relative_path(root, file_path)
-    if rel and rel not in session.files_touched:
-        session.files_touched.append(rel)
-    session.events.append({"type": "edit", "file": rel})
+    if not rel or rel in session.files_touched:
+        return
+    session.files_touched.append(rel)
     save_active_session(root, session)
 
 
@@ -231,7 +234,8 @@ def sync_docs(
     update_recent_sessions(readme_path, manifest.sessions)
 
     if config.compliance.nih_dms or config.compliance.fair:
-        manifest, _ = sync_compliance_artifacts(repo_root, config, manifest, files)
+        if compliance_sync_needed(repo_root, config, manifest, files):
+            manifest, _ = sync_compliance_artifacts(repo_root, config, manifest, files)
 
     head = head_commit(repo_root)
     if head:
@@ -248,10 +252,14 @@ def sync_docs(
     ]
     for doc_rel in doc_paths:
         fp = repo_root / doc_rel
-        if fp.is_file():
-            digest = fingerprint_file(fp)
-            if digest:
-                manifest.doc_fingerprints[doc_rel] = digest
+        if not fp.is_file():
+            continue
+        if doc_fingerprint_unchanged(fp, manifest, doc_rel):
+            continue
+        manifest.doc_stat_signatures[doc_rel] = file_stat_signature(fp)
+        digest = fingerprint_file(fp)
+        if digest:
+            manifest.doc_fingerprints[doc_rel] = digest
 
     return manifest
 

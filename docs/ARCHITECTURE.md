@@ -52,6 +52,19 @@ Human-edited metadata in `project.yaml` is merged with git-detected file pattern
 4. **sessionEnd / stop** — sync changelog, architecture, README, DMS, FAIR, DataCite; archive session to manifest.
 5. **post-commit** (optional) — append changelog entry from commit message.
 
+## Performance
+
+Hot paths (`afterFileEdit`, `sessionStart`) avoid full doc sync. Expensive work is deferred to `sessionEnd` / `sync` and skipped when possible:
+
+| Optimization | Where |
+|--------------|-------|
+| Single `git log` for all new commits | `git_util.commits_since` |
+| Skip FAIR/DMS/DataCite when metadata and data paths unchanged | `perf.compliance_sync_needed` |
+| Cached compliance warnings on session start | `manifest.compliance.validation_warnings` |
+| Stat-based doc fingerprint skip | `manifest.doc_stat_signatures` |
+| Compact session JSON; no per-edit event log | `session_track`, `save_active_session` |
+| Skip re-scaffold when manifest exists | `session_start` |
+
 ## Key Decisions
 
 - Deterministic updates by default; LLM is opt-in via config and environment variables.

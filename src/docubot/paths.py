@@ -35,3 +35,7 @@ def config_path(repo_root: Path) -> Path:
 
 def templates_dir(repo_root: Path) -> Path:
     return repo_root / "templates"
+
+
+def schema_dir(repo_root: Path) -> Path:
+    return docubot_dir(repo_root) / "schema"

@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- `CITATION.cff` auto-sync from `.docubot/metadata/project.yaml` on session finalize
+- JSON Schema validation for `project.yaml` in `docubot validate --compliance`
 - FAIR checklist and DataCite-compatible `metadata/datacite.json` generation
 - NIH Data Management and Sharing Plan scaffold (`docs/DATA_MANAGEMENT_AND_SHARING.md`, NOT-OD-21-014)
 - Project metadata source of truth (`.docubot/metadata/project.yaml`)

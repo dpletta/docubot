@@ -1,14 +1,15 @@
 {
   "schema_version": 1,
-  "last_sync_commit": "0d4afdcebb2127e08a55d853a4443b28ad34efd4",
-  "last_sync_at": "2026-05-19T17:59:08Z",
+  "last_sync_commit": "349dbd59901c43518f264c4de9cfeaf47b329f57",
+  "last_sync_at": "2026-05-20T18:21:54Z",
   "doc_fingerprints": {
-    "CHANGELOG.md": "sha256:c02a21535582db13282ff23b1b34ec97c9896054b0ed74179f65697dbd55b3d2",
-    "docs/ARCHITECTURE.md": "sha256:59433ab28ef6e5001adcd78e4297f781e6f270229258f5b85f8b1e6596a79c65",
-    "README.md": "sha256:7d26f987bec21133d5fbc0aeb07fa484f05c5d78edd08a4e7d098780af5a3cb6",
-    "docs/DATA_MANAGEMENT_AND_SHARING.md": "sha256:436305e85b35f694185aba5cfb60541cd9427ea3687e3aadbe59bb68351edd5f",
-    "docs/FAIR_CHECKLIST.md": "sha256:3a7891a363a2ee7f478e455ca4bc3726337f49e41a8141df17428cd2d1129c10",
-    "metadata/datacite.json": "sha256:33167e59227ae78d80d33e47a829c137a1b6ac8a02d53f10ee022ce541ab20c2"
+    "CHANGELOG.md": "sha256:ca96400acb4f0636f01b3b561bf1cdf6a307a12cb09ee2f24c271e1a96bd3289",
+    "docs/ARCHITECTURE.md": "sha256:377d51d7dd396c3ee486577e2e74c0ad007c66831c3a5f66ad6b93e1e1c7106e",
+    "README.md": "sha256:8909e4c4f4df923bab5d8dcda74b828dfe43ad4fe330013f6166147778752343",
+    "docs/DATA_MANAGEMENT_AND_SHARING.md": "sha256:2d5f1cf78d552ebed1d73382e8cb8ba7b62564ac2e7f9f1c3d585b277e83b303",
+    "docs/FAIR_CHECKLIST.md": "sha256:dedc1a0a7dd210c4fe1a6007d16ad0aaa530d43bf455b3d7ca3f9b6dac97efe4",
+    "metadata/datacite.json": "sha256:231cddeb1f352737b464f376940d63f6309a1c99263296f598549da3276c7b46",
+    "CITATION.cff": "sha256:1f77c3918783a6f4a6c6cbe02022a135ea0475014fc468ccc51f489fb415b0c6"
   },
   "active_session_id": null,
   "sessions": [
@@ -47,8 +48,9 @@
     "e2e-test:gen1:dogfood"
   ],
   "compliance": {
-    "fair_last_assessed": "2026-05-19T17:59:08Z",
-    "nih_dms_last_synced": "2026-05-19T17:59:08Z",
+    "fair_last_assessed": "2026-05-20T18:21:54Z",
+    "nih_dms_last_synced": "2026-05-20T18:21:54Z",
+    "citation_cff_last_synced": "2026-05-20T18:21:54Z",
     "fair_score": {
       "findable": 2,
       "accessible": 2,

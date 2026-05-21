@@ -3,7 +3,7 @@
 _See NOT-OD-21-014._
 
 <!-- docubot:dms-data-type -->
-_Auto-synced 2026-05-19 17:59 UTC_
+_Auto-synced 2026-05-20 18:21 UTC_
 
 **Configured types:** software
 
@@ -19,7 +19,6 @@ Scientific data are not produced by this software project.
 Not applicable for software-only distribution.
 
 **Detected in repository:**
-- Detected modality: `json_structured`
 - Detected modality: `text`
 
 **Related documentation:**
@@ -62,6 +61,6 @@ _Document consent, privacy, and reuse limitations per NOT-OD-21-014._
 <!-- docubot:dms-oversight -->
 - **Responsible party:** Repository maintainer
 - **Review frequency:** At each release and when compliance templates change.
-- **Last docubot sync:** 2026-05-19T17:55:32Z
+- **Last docubot sync:** 2026-05-19T17:59:08Z
 - **Last session finalized:** 2026-05-19T17:26:11Z (`fc67abe4`)
 <!-- /docubot:dms-oversight -->

@@ -7,6 +7,7 @@ from pathlib import Path
 from string import Template
 
 from docubot.config import Config
+from docubot.metadata.citation import emit_citation_cff
 from docubot.metadata.datacite import emit_datacite_json
 from docubot.metadata.fair import FairScore, sync_fair_checklist
 from docubot.metadata.nih_dms import scaffold_dms_from_template, sync_dms_plan
@@ -113,6 +114,13 @@ def sync_compliance_artifacts(
         manifest.compliance.fair_last_assessed = now
         if fair_score:
             manifest.compliance.fair_score = fair_score.to_dict()
+
+    cff_path = config.citation_cff_path(repo_root)
+    if cff_path.is_file() or config.project_metadata_path(repo_root).is_file():
+        emit_citation_cff(cff_path, meta, repo_root)
+        if manifest.compliance is None:
+            manifest.compliance = ComplianceState()
+        manifest.compliance.citation_cff_last_synced = now
 
     report = validate_compliance(meta, config, manifest, repo_root, mode="all")
     warnings = report.warnings + report.errors

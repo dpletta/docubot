@@ -40,9 +40,11 @@ Docubot supports NIH Data Management and Sharing ([NOT-OD-21-014](https://grants
 | `metadata/nih_dms.py` | `docs/DATA_MANAGEMENT_AND_SHARING.md` (six DMS elements) |
 | `metadata/fair.py` | `docs/FAIR_CHECKLIST.md` with scored checkboxes |
 | `metadata/datacite.py` | `metadata/datacite.json` (DataCite kernel-4 JSON) |
+| `metadata/citation.py` | `CITATION.cff` (CFF 1.2.0 software citation) |
+| `metadata/schema.py` | JSON Schema validation for `project.yaml` |
 | `metadata/validate.py` | `docubot validate --compliance` |
 
-Human-edited metadata in `project.yaml` is merged with git-detected file patterns on each sync. Genomic Data Sharing (GDS) supplements are out of scope for v0.1.
+Human-edited metadata in `project.yaml` is merged with git-detected file patterns on each sync. `CITATION.cff` and DataCite JSON are regenerated from `project.yaml` on sync (edit metadata there, not the generated files). Genomic Data Sharing (GDS) supplements are out of scope for v0.1.
 
 ## Data Flow
 

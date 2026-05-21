@@ -46,7 +46,7 @@ Installs [`.githooks/`](.githooks/) and sets `core.hooksPath` for changelog sync
 | `docubot sync` | Sync without closing session |
 | `docubot status` | Staleness and session info |
 | `docubot validate` | CI check (exit 1 if stale in strict mode) |
-| `docubot validate --compliance` | FAIR + NIH DMS metadata checks |
+| `docubot validate --compliance` | FAIR + NIH DMS metadata and project.yaml schema checks |
 
 ## Configuration
 
@@ -78,9 +78,11 @@ Edit research metadata in [`.docubot/metadata/project.yaml`](.docubot/metadata/p
 | NIH DMS plan | [docs/DATA_MANAGEMENT_AND_SHARING.md](docs/DATA_MANAGEMENT_AND_SHARING.md) (enabled) |
 | FAIR checklist | [docs/FAIR_CHECKLIST.md](docs/FAIR_CHECKLIST.md) (enabled) |
 | DataCite JSON | [metadata/datacite.json](metadata/datacite.json) |
+| CITATION.cff | [CITATION.cff](CITATION.cff) |
 | Project metadata | `.docubot/metadata/project.yaml` |
-| Last FAIR assess | 2026-05-19T17:59:08Z |
-| Last DMS sync | 2026-05-19T17:59:08Z |
+| Last FAIR assess | 2026-05-20T18:21:54Z |
+| Last DMS sync | 2026-05-20T18:21:54Z |
+| Last CITATION.cff sync | 2026-05-20T18:21:54Z |
 | FAIR score (checked) | F:2/3 A:2/3 I:2/2 R:3/3 |
 
 **Warnings:**

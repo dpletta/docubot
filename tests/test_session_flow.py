@@ -19,6 +19,14 @@ def test_session_finalize_idempotent(tmp_path: Path, monkeypatch):
         check=True,
         capture_output=True,
     )
+    # Disable commit signing so the test is independent of the developer's
+    # global git config (some CI/cloud environments enforce signing globally).
+    subprocess.run(
+        ["git", "config", "commit.gpgsign", "false"],
+        cwd=repo,
+        check=True,
+        capture_output=True,
+    )
 
     # Copy minimal docubot config
     (repo / ".docubot").mkdir()

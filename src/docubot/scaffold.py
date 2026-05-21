@@ -99,6 +99,8 @@ if command -v docubot >/dev/null 2>&1; then
   docubot git post-commit
 elif [ -x "$ROOT/.venv/bin/docubot" ]; then
   "$ROOT/.venv/bin/docubot" git post-commit
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHONPATH="$ROOT/src" python3 -m docubot.cli git post-commit 2>/dev/null || true
 fi
 """
     elif name == "pre-commit":
@@ -109,6 +111,8 @@ if command -v docubot >/dev/null 2>&1; then
   docubot git pre-commit || exit $?
 elif [ -x "$ROOT/.venv/bin/docubot" ]; then
   "$ROOT/.venv/bin/docubot" git pre-commit || exit $?
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHONPATH="$ROOT/src" python3 -m docubot.cli git pre-commit || exit $?
 fi
 """
     else:
@@ -119,6 +123,9 @@ if command -v docubot >/dev/null 2>&1; then
   docubot git prepare-commit-msg "$1" "$2" "$3"
 elif [ -x "$ROOT/.venv/bin/docubot" ]; then
   "$ROOT/.venv/bin/docubot" git prepare-commit-msg "$1" "$2" "$3"
+elif command -v python3 >/dev/null 2>&1; then
+  PYTHONPATH="$ROOT/src" python3 -m docubot.cli \\
+    git prepare-commit-msg "$1" "$2" "$3" 2>/dev/null || true
 fi
 """
     path.write_text(body, encoding="utf-8")

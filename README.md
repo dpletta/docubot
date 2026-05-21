@@ -81,7 +81,7 @@ Edit research metadata in [`.docubot/metadata/project.yaml`](.docubot/metadata/p
 | Project metadata | `.docubot/metadata/project.yaml` |
 | Last FAIR assess | 2026-05-19T17:59:08Z |
 | Last DMS sync | 2026-05-19T17:59:08Z |
-| FAIR score (checked) | F:2/3 A:3/3 I:2/2 R:3/3 |
+| FAIR score (checked) | F:2/3 A:2/3 I:2/2 R:3/3 |
 
 **Warnings:**
 - data.repository.persistent_id is not set (FAIR Findable)

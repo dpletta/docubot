@@ -63,7 +63,7 @@ def compute_fair_score(
     # Accessible (max 3)
     if acc.license or meta.license:
         score.accessible += 1
-    if acc.restrictions or acc.privacy_notes or not acc.controlled_access:
+    if acc.restrictions or acc.privacy_notes or acc.consent_notes:
         score.accessible += 1
     if repo.share_timeline:
         score.accessible += 1

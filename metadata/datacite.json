@@ -17,7 +17,7 @@
   "publicationYear": "2026",
   "dates": [
     {
-      "date": "2026-05-19",
+      "date": "2026-05-20",
       "dateType": "Updated"
     }
   ],
@@ -38,7 +38,7 @@
     }
   ],
   "fundingReferences": [],
-  "version": "0.1.0+59b033b",
+  "version": "0.1.0+0d4afdc",
   "relatedIdentifiers": [
     {
       "relatedIdentifier": "https://github.com/dpletta/docubot",

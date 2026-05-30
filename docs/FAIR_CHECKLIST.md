@@ -3,8 +3,8 @@
 _Assess Findable, Accessible, Interoperable, Reusable._
 
 <!-- docubot:fair-summary -->
-Last assessed: **2026-05-19 17:59 UTC**  
-Scores (checked items): Findable 2/3, Accessible 3/3, Interoperable 2/2, Reusable 3/3
+Last assessed: **2026-05-20 18:21 UTC**  
+Scores (checked items): Findable 2/3, Accessible 2/3, Interoperable 2/2, Reusable 3/3
 <!-- /docubot:fair-summary -->
 
 <!-- docubot:fair-findable -->

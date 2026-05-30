@@ -75,8 +75,7 @@ def session_start(payload: dict[str, Any]) -> dict[str, Any]:
     config = load_config(root)
     if not manifest_path(root).is_file():
         scaffold_docs(root, project_name=root.name)
-    else:
-        scaffold_compliance_files(root, config, root.name)
+    scaffold_compliance_files(root, config, root.name)
 
     conversation_id = payload.get("conversation_id")
     generation_id = payload.get("generation_id")
@@ -249,6 +248,7 @@ def sync_docs(
         config.docs.dms_plan,
         config.docs.fair_checklist,
         config.metadata.datacite_output,
+        config.metadata.citation_cff,
     ]
     for doc_rel in doc_paths:
         fp = repo_root / doc_rel

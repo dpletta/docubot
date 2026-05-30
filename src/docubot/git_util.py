@@ -106,20 +106,41 @@ def get_commit(repo_root: Path, sha: str) -> CommitInfo | None:
     return CommitInfo(sha=full_sha, short=short_sha(full_sha), subject=subject, body=body)
 
 
+_COMMIT_RECORD = "---DOCUBOT-COMMIT---"
+
+
 def commits_since(repo_root: Path, since_sha: str | None) -> list[CommitInfo]:
-    if not is_git_repo(repo_root):
+    """List commits after since_sha using one git log (avoids N subprocess calls)."""
+    if not is_git_repo(repo_root) or not since_sha:
         return []
-    if not since_sha:
-        return []
-    args = ["log", "--format=%H", f"{since_sha}..HEAD"]
     try:
-        out = _run(repo_root, *args)
+        out = _run(
+            repo_root,
+            "log",
+            f"--format=%H%n%B%n{_COMMIT_RECORD}%n",
+            f"{since_sha}..HEAD",
+        )
     except GitError:
         return []
     if not out:
         return []
-    shas = out.splitlines()
-    return [c for sha in shas if (c := get_commit(repo_root, sha))]
+    commits: list[CommitInfo] = []
+    for chunk in out.split(_COMMIT_RECORD):
+        chunk = chunk.strip()
+        if not chunk:
+            continue
+        lines = chunk.splitlines()
+        if not lines:
+            continue
+        full_sha = lines[0].strip()
+        if not full_sha:
+            continue
+        body = "\n".join(lines[1:]).strip()
+        subject, _ = parse_commit_message(body)
+        commits.append(
+            CommitInfo(sha=full_sha, short=short_sha(full_sha), subject=subject, body=body)
+        )
+    return commits
 
 
 def changed_files_since(repo_root: Path, since_sha: str | None) -> list[str]:

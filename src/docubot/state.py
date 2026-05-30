@@ -52,6 +52,7 @@ class SessionRecord:
 class ComplianceState:
     fair_last_assessed: str | None = None
     nih_dms_last_synced: str | None = None
+    project_metadata_signature: str | None = None
     citation_cff_last_synced: str | None = None
     fair_score: dict[str, int] = field(default_factory=dict)
     validation_warnings: list[str] = field(default_factory=list)
@@ -64,6 +65,7 @@ class ComplianceState:
         return cls(
             fair_last_assessed=data.get("fair_last_assessed"),
             nih_dms_last_synced=data.get("nih_dms_last_synced"),
+            project_metadata_signature=data.get("project_metadata_signature"),
             citation_cff_last_synced=data.get("citation_cff_last_synced"),
             fair_score=dict(data.get("fair_score") or {}),
             validation_warnings=list(data.get("validation_warnings") or []),
@@ -76,6 +78,7 @@ class Manifest:
     last_sync_commit: str | None = None
     last_sync_at: str | None = None
     doc_fingerprints: dict[str, str] = field(default_factory=dict)
+    doc_stat_signatures: dict[str, str] = field(default_factory=dict)
     active_session_id: str | None = None
     sessions: list[SessionRecord] = field(default_factory=list)
     finalize_keys: list[str] = field(default_factory=list)
@@ -87,6 +90,7 @@ class Manifest:
             "last_sync_commit": self.last_sync_commit,
             "last_sync_at": self.last_sync_at,
             "doc_fingerprints": self.doc_fingerprints,
+            "doc_stat_signatures": self.doc_stat_signatures,
             "active_session_id": self.active_session_id,
             "sessions": [s.to_dict() for s in self.sessions],
             "finalize_keys": self.finalize_keys,
@@ -109,6 +113,7 @@ class Manifest:
             last_sync_commit=data.get("last_sync_commit"),
             last_sync_at=data.get("last_sync_at"),
             doc_fingerprints=dict(data.get("doc_fingerprints") or {}),
+            doc_stat_signatures=dict(data.get("doc_stat_signatures") or {}),
             active_session_id=data.get("active_session_id"),
             sessions=sessions,
             finalize_keys=list(data.get("finalize_keys") or []),
@@ -171,7 +176,7 @@ def load_active_session(repo_root: Path, session_id: str) -> ActiveSession | Non
 def save_active_session(repo_root: Path, session: ActiveSession) -> None:
     sessions_dir(repo_root).mkdir(parents=True, exist_ok=True)
     session_file(repo_root, session.id).write_text(
-        json.dumps(session.to_dict(), indent=2) + "\n",
+        json.dumps(session.to_dict(), separators=(",", ":")) + "\n",
         encoding="utf-8",
     )
 

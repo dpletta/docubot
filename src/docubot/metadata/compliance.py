@@ -7,6 +7,7 @@ from pathlib import Path
 from string import Template
 
 from docubot.config import Config
+from docubot.fingerprint import file_stat_signature
 from docubot.metadata.citation import emit_citation_cff
 from docubot.metadata.datacite import emit_datacite_json
 from docubot.metadata.fair import FairScore, sync_fair_checklist
@@ -14,6 +15,7 @@ from docubot.metadata.nih_dms import scaffold_dms_from_template, sync_dms_plan
 from docubot.metadata.project import load_project_metadata
 from docubot.metadata.validate import validate_compliance
 from docubot.paths import templates_dir
+from docubot.perf import compliance_sync_needed
 from docubot.readme import update_compliance_summary
 from docubot.state import ComplianceState, Manifest
 
@@ -73,8 +75,16 @@ def sync_compliance_artifacts(
     config: Config,
     manifest: Manifest,
     files: list[str],
+    *,
+    force: bool = False,
 ) -> tuple[Manifest, list[str]]:
     """Sync DMS, FAIR, DataCite, README compliance block. Returns warnings."""
+    if not force and not compliance_sync_needed(repo_root, config, manifest, files):
+        comp = manifest.compliance
+        if comp and comp.validation_warnings:
+            return manifest, list(comp.validation_warnings)
+        return manifest, []
+
     meta = load_project_metadata(
         config.project_metadata_path(repo_root),
         project_name=repo_root.name,
@@ -127,6 +137,9 @@ def sync_compliance_artifacts(
     if manifest.compliance is None:
         manifest.compliance = ComplianceState()
     manifest.compliance.validation_warnings = warnings
+    meta_path = config.project_metadata_path(repo_root)
+    if meta_path.is_file():
+        manifest.compliance.project_metadata_signature = file_stat_signature(meta_path)
 
     update_compliance_summary(
         config.readme_path(repo_root),
@@ -144,6 +157,9 @@ def compliance_context_warnings(
     config: Config,
     manifest: Manifest,
 ) -> list[str]:
+    comp = manifest.compliance
+    if comp and comp.validation_warnings:
+        return comp.validation_warnings[:5]
     meta = load_project_metadata(
         config.project_metadata_path(repo_root),
         project_name=repo_root.name,

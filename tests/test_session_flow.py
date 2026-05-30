@@ -84,3 +84,43 @@ def test_session_finalize_idempotent(tmp_path: Path, monkeypatch):
     assert len(manifest.sessions) == 1
     readme = (repo / "README.md").read_text(encoding="utf-8")
     assert "docubot:recent-sessions" in readme
+
+
+def test_session_start_scaffolds_compliance_when_manifest_missing(
+    tmp_path: Path, monkeypatch
+):
+    repo = tmp_path / "proj"
+    repo.mkdir()
+    monkeypatch.chdir(repo)
+
+    from types import SimpleNamespace
+
+    from docubot.state import Manifest, save_manifest
+
+    compliance_calls: list[str] = []
+
+    def fake_scaffold_docs(root: Path, project_name: str) -> list[str]:
+        save_manifest(root, Manifest())
+        return [".docubot/manifest.json"]
+
+    def fake_scaffold_compliance_files(root: Path, config, project_name: str) -> list[str]:
+        compliance_calls.append(project_name)
+        return []
+
+    monkeypatch.setattr("docubot.session.scaffold_docs", fake_scaffold_docs)
+    monkeypatch.setattr(
+        "docubot.session.scaffold_compliance_files",
+        fake_scaffold_compliance_files,
+    )
+    monkeypatch.setattr(
+        "docubot.session.check_stale",
+        lambda *args: SimpleNamespace(stale=False, reason=None, changed_files=[]),
+    )
+    monkeypatch.setattr("docubot.session.compliance_context_warnings", lambda *args: [])
+
+    from docubot.session import session_start
+
+    result = session_start({"conversation_id": "c1", "generation_id": "g1"})
+
+    assert "session_id" in result
+    assert compliance_calls == ["proj"]
